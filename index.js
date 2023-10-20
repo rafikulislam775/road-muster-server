@@ -27,6 +27,7 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    //01
     // Create a new data and connect to MongoDB
     const productsCollection = client.db("productsDB").collection("products");
     //get data form client site to send  server "C" 01
@@ -43,7 +44,15 @@ async function run() {
       const products = await cursor.toArray();
       res.send(products);
     });
-
+//01 finish
+//    // Create a new data and connect to MongoDB 01
+    const myCartsCollection = client.db("myCartDB").collection("myCarts");
+      //get data form client site to send  server "C" 02
+      app.post('/myCarts',async(req,res)=>{
+        const myCart =req.body;
+        console.log(myCart)
+         // Insert the data on mongodb
+      })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
