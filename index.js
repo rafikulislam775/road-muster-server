@@ -10,7 +10,7 @@ app.use(express.json());
 // process.env.DB_USER;
 // process.env.DB_PASSWORD;
 // install mongodb plugin
-console.log(process.env.DB_USER);
+// console.log(process.env.DB_USER);
 const uri =
   "mongodb+srv://RoadMuster:DJ7AMu9d8txtQ2Vx@cluster0.ci8pa6r.mongodb.net/?retryWrites=true&w=majority";
 
@@ -44,15 +44,23 @@ async function run() {
       const products = await cursor.toArray();
       res.send(products);
     });
-//01 finish
-//    // Create a new data and connect to MongoDB 01
+    //01 finish
+    //  // Create a new data and connect to MongoDB 01
     const myCartsCollection = client.db("myCartDB").collection("myCarts");
-      //get data form client site to send  server "C" 02
-      app.post('/myCarts',async(req,res)=>{
-        const myCart =req.body;
-        console.log(myCart)
-         // Insert the data on mongodb
-      })
+    //get data form client site to send  server "C" 02
+    app.post("/myCarts", async (req, res) => {
+      const myCart = req.body;
+      console.log(myCart);
+      // Insert the data on mongodb
+      const result = await myCartsCollection.insertOne(myCart);
+      res?.send(result);
+    });
+    //Read data and send on client site display 02
+    app.get("/myCarts", async (req, res) => {
+      const cursor = myCartsCollection.find();
+      const myCarts = await cursor.toArray();
+      res.send(myCarts);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
