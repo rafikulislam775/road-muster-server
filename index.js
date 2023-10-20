@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 4000;
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // middleware for
 app.use(cors());
 app.use(express.json());
@@ -60,6 +60,12 @@ async function run() {
       const cursor = myCartsCollection.find();
       const myCarts = await cursor.toArray();
       res.send(myCarts);
+    });
+    //delete single one by one by id 03
+    app.delete("/maCarts/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await myCartsCollection.deleteOne(query);
     });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
