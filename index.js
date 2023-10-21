@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+require("dotenv").config();
 const port = process.env.PORT || 4000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // middleware for
@@ -10,9 +11,8 @@ app.use(express.json());
 // process.env.DB_USER;
 // process.env.DB_PASSWORD;
 // install mongodb plugin
-// console.log(process.env.DB_USER);
-const uri =
-  "mongodb+srv://RoadMuster:DJ7AMu9d8txtQ2Vx@cluster0.ci8pa6r.mongodb.net/?retryWrites=true&w=majority";
+// console.log(process.env.DB_USER, process.env.DB_PASSWORD);
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ci8pa6r.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -26,14 +26,14 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     //01
     // Create a new data and connect to MongoDB
     const productsCollection = client.db("productsDB").collection("products");
     //get data form client site to send  server "C" 01
     app.post("/addProducts", async (req, res) => {
       const product = req.body;
-      console.log(product);
+      // console.log(product);
       // Insert the data on mongodb
       const result = await productsCollection.insertOne(product);
       res?.send(result);
@@ -50,7 +50,7 @@ async function run() {
     //get data form client site to send  server "C" 02
     app.post("/myCarts", async (req, res) => {
       const myCart = req.body;
-      console.log(myCart);
+      // console.log(myCart);
       // Insert the data on mongodb
       const result = await myCartsCollection.insertOne(myCart);
       res?.send(result);
@@ -67,10 +67,10 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const result = await myCartsCollection.deleteOne(query);
       res.send(result);
-      console.log(result);
+      // console.log(result);
     });
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
