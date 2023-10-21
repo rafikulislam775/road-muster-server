@@ -62,10 +62,12 @@ async function run() {
       res.send(myCarts);
     });
     //delete single one by one by id 03
-    app.delete("/maCarts/:id", async (req, res) => {
+    app.delete("/myCarts/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await myCartsCollection.deleteOne(query);
+      res.send(result);
+      console.log(result);
     });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
